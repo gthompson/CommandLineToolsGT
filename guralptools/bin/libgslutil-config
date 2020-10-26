@@ -1,0 +1,97 @@
+#!/bin/bash
+# libgslutil/src/libgslutil/config-script
+#
+# libgslutil-config template. Variables are finalised at install time.
+#
+dep_cflags=""
+dep_libs=""
+include_dir="/raid/data/guralptools/include"
+include_dir_set="no"
+lib_dir="/raid/data/guralptools/lib"
+lib_dir_set="no"
+
+
+
+usage() {
+    cat <<EOF
+Usage: libgslutil-config [options]
+Options:
+        [--version]
+        [--libs]
+        [--libdir[=DIR]]
+        [--cflags]
+        [--includedir[=DIR]]
+EOF
+    exit $1
+}
+
+
+
+[ $# -eq 0 ] && usage 1 1>&2
+
+
+
+while [ $# -gt 0 ]
+do
+    case "$1" in
+        -*=*) 
+            optarg="$(echo "$1" | sed 's/[-_a-zA-Z0-9]*=//')"
+        ;;
+
+        *)
+            optarg=""
+        ;;
+    esac
+
+    case "$1" in
+        --libdir=*)
+            lib_dir="${optarg}"
+            lib_dir_set="yes"
+        ;;
+
+        --libdir)
+            echo_lib_dir="yes"
+        ;;
+
+        --includedir=*)
+            include_dir="${optarg}"
+            include_dir_set="yes"
+        ;;
+
+        --includedir)
+            echo_include_dir="yes"
+        ;;
+
+        --version)
+            echo "1.2.3"
+            exit 0
+        ;;
+
+        --cflags)
+            [ "${include_dir}" != "/usr/include" ] && includes="-I${include_dir}"
+            echo_cflags="yes"
+        ;;
+
+        --libs)
+            echo_libs="yes"
+        ;;
+
+        *)
+            usage 1 1>&2
+        ;;
+    esac
+
+    shift
+done
+
+
+
+[ "${echo_prefix}" == "yes" ] && echo "${prefix}"
+[ "${echo_exec_prefix}" == "yes" ] && echo "${exec_prefix}"
+[ "${echo_cflags}" == "yes" ] && echo "${dep_cflags} ${includes}"
+[ "${echo_libs}" == "yes" ] && echo "${dep_libs} -L${lib_dir} -lgslutil"
+true
+
+
+
+# vim: syntax=sh:expandtab:ts=4:sw=4

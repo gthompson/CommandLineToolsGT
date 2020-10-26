@@ -1,0 +1,24 @@
+# .bashrc
+#----------------------------------------#
+#---- THIS IS A TEMPLATE .bashrc FILE ---#
+#---- FOR THE SEISMICLAB NETWORK      ---#
+#---- COPY IT TO YOUR HOME DIRECTORY  ---#
+#---- AND RENAME TO .bashrc           ---#
+#---  AND THEN REMOVE THESE LINES     ---#
+#---  STARTING WITH #---              ---#
+#----------------------------------------#
+
+# Source global standard definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+
+# Source global settings specific to the seismiclab network
+if [ -f /raid/apps/setup/global_bashrc ]; then
+	. /raid/apps/setup/global_bashrc
+fi
+
+alias newton="ssh -X newton.rc.usf.edu"
+
+# User specific aliases and functions
+#--- Add your own customizations below this line

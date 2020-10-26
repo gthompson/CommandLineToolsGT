@@ -1,0 +1,5 @@
+TARGET	/media/prettygood/computers/hal9000
+SOURCE	/media/sda1
+SOURCE	/media/sdb1
+SOURCE	/media/sdd1
+SOURCE	/home

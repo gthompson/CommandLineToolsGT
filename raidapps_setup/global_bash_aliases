@@ -1,0 +1,61 @@
+#########################
+#      ALIASES          #
+#########################
+
+# SAFE SEAT BELT
+# Show where you copy
+alias rm='rm -vi'
+alias mv='mv -vi'
+alias cp="cp -vi"
+
+# Seismic software
+alias seisan=". /raid/apps/seisan/COM/SEISAN.bash"
+# alias select="seismo/PRO/select" # add this to SEISAN.bash
+# This is obsolete and broken. Use the Anaconda distribution instead
+#alias obspy=". /raid/apps/OBSPY/bin/activate" 
+alias sac="${SACHOME}/bin/sac /raid/apps/sac/macros/init.m"
+alias swarm="/raid/apps/swarm/swarm.sh"
+alias earthworm="/raid/apps/earthworm_7.7/environment/ew_linux.bash"
+alias matlabnew="/raid/apps/matlab/R2015a/bin/matlab"
+alias matlab="/raid/apps/matlab/R2015a/bin/matlab"
+alias matlabold="/raid/apps/matlab/r2013b/bin/matlab"
+alias dbpick="${ANTELOPE}/bin/dbpick -nostarttalk"
+
+# enable color support of ls and also add handy aliases
+#if [ -x /usr/bin/dircolors ]; then
+#    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+#    alias ls='/bin/ls --color=auto'
+#    #alias dir='dir --color=auto'
+#    #alias vdir='vdir --color=auto'
+#
+#    alias grep='grep --color=auto'
+#    alias fgrep='fgrep --color=auto'
+#    alias egrep='egrep --color=auto'
+#    export GREP_OPTIONS='--color=auto'
+#fi
+
+# some more ls aliases
+alias ll='ls -lhF'
+alias lc='ls -ChF'
+alias la='ls -lAhF'
+alias llx='ls -lXBhF'             # sort by extension
+alias lls='ls -lShrhF'            # sort by size
+alias llc='ls -lcrhF'                     # sort by change time
+alias llu='ls -lurhF'                     # sort by access time
+alias llr='ls -lR'              # recursive ls
+alias llt='ls -ltrhF'             # sort by date
+
+# Make it no matter what
+alias mkdir="mkdir -p"
+
+#alias top='top $TOP_OPTIONS'
+#alias rcopy='rsync -az --stats --progress --delete'
+alias trim_whitespace="sed -i 's/[ \t]*$//' "
+
+# MOUNT CDROM
+alias mountcd='sudo mount /dev/sr0 /cdrom'
+#alias cwake="source /raid/apps/src/cwake/rc/cwake.rc; ln -s /raid/data/antelope/databases/dbmaster dbmaster; cp -i /raid/apps/src/cwake/rc/dbpickrc .dbpickrc"
+alias cwake='. /raid/apps/setup/global_bashrc_cwake'
+
+alias snaphu='/raid/apps/snaphu-v1.4.2/bin/snaphu'
+

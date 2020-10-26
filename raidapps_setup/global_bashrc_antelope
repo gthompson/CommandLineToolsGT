@@ -1,0 +1,69 @@
+# ANTELOPE
+# Users can use a different version of antelope from CURRENT_ANTELOPE_VERSION
+# by setting a command in their own .bashrc file, e.g.:
+#     export ANTELOPE_VERSION=4.11
+#
+#export CURRENT_ANTELOPE_VERSION=5.5
+export CURRENT_ANTELOPE_VERSION=5.7
+#export CURRENT_ANTELOPE_VERSION=5.3
+if [ -n "${ANTELOPE_VERSION:+x}" ]
+then
+        ANTELOPE_VERSION=${ANTELOPE_VERSION}
+else
+        ANTELOPE_VERSION=$CURRENT_ANTELOPE_VERSION
+fi
+if [ -f /opt/antelope/${ANTELOPE_VERSION}/setup.sh ]; then
+	#echo "Adding Antelope"
+	. /opt/antelope/${ANTELOPE_VERSION}/setup.sh
+else
+	echo "/opt/antelope/${ANTELOPE_VERSION} not found" 
+fi
+
+# AEIC software library
+if [ -n "${AEIC_VERSION:+x}" ]
+then
+        AEIC_VERSION=${AEIC_VERSION}
+else
+        AEIC_VERSION=$CURRENT_ANTELOPE_VERSION
+fi
+if [ -f /opt/aeic/${AEIC_VERSION}/setup.sh ]; then
+	. /opt/aeic/${AEIC_VERSION}/setup.sh
+#else
+	#echo "/opt/aeic/${AEIC_VERSION} not found" 
+fi
+
+# AVOSEIS software library
+if [ -n "${AVOSEIS_VERSION:+x}" ]
+then
+        AVOSEIS_VERSION=${AVOSEIS_VERSION}
+else
+        AVOSEIS_VERSION=$CURRENT_ANTELOPE_VERSION
+fi
+if [ -f /opt/avoseis/${AVOSEIS_VERSION}/setup.sh ]; then
+	. /opt/avoseis/${AVOSEIS_VERSION}/setup.sh
+#else
+	#echo "/opt/avoseis/${AVOSEIS_VERSION} not found" 
+fi
+
+# Add AEIC parameter files, schemas, binaries
+#AEIC=/usr/local/aeic/4.10 ; export AEIC
+#export PATH=$PATH:/home/glenn/bin
+#PFPATH=$PFPATH:$AEICANT/data/pf ; export PFPATH
+#SCHEMA_DIR=$ANTELOPE/data/schemas:$AEICANT/data/schemas ; export SCHEMA_DIR
+#PATH=$PATH:$AEICANT/bin
+
+# Add AVOSEIS parameter files, schemas, binaries
+#export PFPATH=$PFPATH:$AVOSEIS/data/pf
+#export SCHEMA_DIR=$AVOSEIS/data/schemas:$SCHEMA_DIR
+#export PATH=$AVOSEIS/bin:$PATH
+
+# Include Antelope perl modules
+#export PERL5LIB=$ANTELOPE/data/perl:$AVOSEIS/data/perl
+#export MATLAB_ANTELOPE=$ANTELOPE/local/data/matlab/2009b/antelope
+
+# Add the setup directory to PFPATH
+export PFPATH="$PFPATH:/raid/apps/setup/pf/"
+
+# Workaround for ATM not working - see Kent's email on 4-Sep-2017
+export LD_PRELOAD=/raid/apps/antelope/libstdc++.so
+

@@ -1,0 +1,21 @@
+#!/bin/bash
+echo "sourcing /raid/apps/src/cwake/rc/cwake.rc"
+source /raid/apps/src/cwake/rc/cwake.rc
+if [[ -e ./dbmaster ]]; then
+	echo "./dbmaster exists, not overwriting"
+else
+	echo "./dbmaster does not exist, creating symbolic link ./dbmaster to /raid/data/antelope/databases/dbmaster"
+	ln -s /raid/data/antelope/databases/dbmaster dbmaster 
+fi 
+
+if [[ -f ./.dbpickrc ]]; then
+	echo "./.dbpickrc exists, not overwriting"
+else
+	if [[ -f ~/.dbpickrc ]]; then
+		echo "~/.dbpickrc exists, not overwriting"
+	else
+		echo "neither ./.dbpickrc or ~/.dbpickrc exist: copying /raid/apps/src/cwake/rc/dbpickrc to ./.dbpickrc"
+		cp -i /raid/apps/src/cwake/rc/dbpickrc .dbpickrc
+	fi
+fi
+

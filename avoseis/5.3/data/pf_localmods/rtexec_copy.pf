@@ -1,0 +1,181 @@
+#################
+# AVOSEIS RTEXEC.PF
+#################
+
+Processes &Tbl{
+}
+
+Run     &Arr{
+}
+
+Pf_restart      &Tbl{
+}
+
+Defines &Arr{
+ANTELOPE	PRESERVE
+ORBWF      	:6510  
+ORB_AEIC         kobuk:6517
+DB		db/archive
+SITE_DB		dbmaster/master_stations
+ELOG_MAXMSG 	0
+WARNINGLOG      logs/warnings.log       # This is for diagnostic messages for email, alarms, webpage etc. See carlstatrig2antelope.
+WEEKLY_SEISMICITY_DIR	/usr/local/mosaic/Seis/weekly_seismicity
+COUNTS_DIR	/usr/local/mosaic/Seis/weekly_seismicity/counts
+TOTALDB         /Seis/catalogs/avo/Total/Total
+MONTHLYDB         /Seis/catalogs/avo/monthly
+}
+
+Env     &Arr{
+ANTELOPE		$ANTELOPE
+AVOSEIS                 PRESERVE
+PATH                    PRESERVE
+PFPATH			PRESERVE
+HOME                    PRESERVE
+TZ                      PRESERVE
+PWD                     PRESERVE
+LOGNAME                 PRESERVE
+TERM                    PRESERVE || xterm
+DISPLAY                 PRESERVE || :0
+SCHEMA_DEFAULT          css3.0
+SCHEMA_DIR		PRESERVE
+SHELL			PRESERVE
+PERL5LIB                PRESERVE
+DB               	$DB
+ORBWF              	$ORBWF
+SITE_DB     		$SITE_DB
+EDITOR			PRESERVE
+TOTALDB         	$TOTALDB
+MONTHLYDB         	$MONTHLYDB
+WEEKLY_SEISMICITY_DIR	$WEEKLY_SEISMICITY_DIR
+COUNTS_DIR		$COUNTS_DIR
+}
+
+# Start/restart parameters
+Start_period			10      
+Minimum_period_between_starts   10      
+Failure_threshold       	300     # 5 minutes
+Failure_repetitions     	5       
+Failure_retry_period    	3600    # 1 hour
+
+Shutdown_order &Tbl{
+}
+
+Shutdown_when_task_dies	&Arr{
+}
+
+startup_shutdown_email	mitch@giseis.alaska.edu, glenn@giseis.alaska.edu
+
+# resource problems
+status_email		mitch@giseis.alaska.edu, glenn@giseis.alaska.edu
+
+Startup_tasks   &Tbl{
+}
+
+Shutdown_tasks  &Tbl{
+}
+
+max_cron_gap    3600 
+
+crontab &Arr{
+#  task    UTC/LOCAL Min Hr Day Month DayOfWeek  Command
+##################### GENERAL ADMIN ###############################
+# report on rt system status and data return
+## sysreport UTC 0 3 * * * rtsys -v -m "glenn@giseis.alaska.edu" -p
+## datareport UTC 30 3 * * * rtreport -z -v -m "glenn@giseis.alaska.edu"
+# remove files which have been idle for 7 days (-n option mentions but does not remove)
+cleartmp LOCAL 5 1 * * * cleartmp -n -v $PWD/logs 7
+
+# keep all files in logs directory to less than 200 kB
+cleanlogs LOCAL 5,17,29,41,53 * * * * truncate_log -m 200 -r logs/*
+# Show a list of needed patches
+patches LOCAL 4 3 * * 0  antelope_update -l -n -v -m $LOGNAME 
+
+# Re-create the complete AVO catalog in Datascope CSS3.0, and update the Datascope derived VOLC2 XML Files
+aqms2totaldb UTC 5 * * * * aqms2totaldb
+
+# The weekly report plot (aka sausage plot)
+weekly_report_few LOCAL 27 * * * * sausageplot $TOTALDB $AVOSEIS/data/volcanoes_avo $WEEKLY_SEISMICITY_DIR few.png 13 1 
+weekly_report_all LOCAL 57 * * * * sausageplot $TOTALDB $AVOSEIS/data/volcanoes_avo $WEEKLY_SEISMICITY_DIR all.png 13 13 
+# COUNTS / EVENTRATE  PLOTS
+counts_plots LOCAL 35 12,18 * * * dbploteventratewrapper $TOTALDB $AVOSEIS/data/volcanoes_avo $COUNTS_DIR/plots
+############################################################################################# UTC * * * * * #############################################################################################
+}
+
+Time_to_die     30
+
+Limit   &Arr{
+cputime         unlimited
+filesize        unlimited
+descriptors     unlimited       # large for orb2db
+stacksize       8388608         # unlimited is too big: can't have larger orbs
+datasize        unlimited
+coredumpsize    unlimited       # so that we may get a core dump
+vmemoryuse      unlimited
+}
+
+umask	002
+
+Database        rtsys/rtsys
+
+email_incident_reports  mitch@giseis.alaska.edu,glenn@giseis.alaska.edu
+
+include_corefile        no
+
+Chatter_limit   7200    # minimum gap between messages
+Min_vmfree        50    # Mbytes
+
+
+####################################################################
+# rtm Parameters
+# The following parameters are not used directly by rtexec, but
+# are instead read and used by rtm.
+####################################################################
+
+disks   &Tbl{
+# name    file  minfree_Mbytes min_kinodes description
+root      /     20   1  root partition: required by many unix tasks
+waveforms db/   3000  1   waveform files
+orb 	  orb/  3000  1   orb files
+tmp       /tmp  20   1  tmp = swap: indicates memory usage
+run      .     20   1  log files,dbquakes database
+}
+
+Buttons &Tbl{         # Use {} instead of '' to conform to tcl's quoting
+dbe_archive	dbe $DB 
+dbe_site	dbe $SITE_DB
+dbe_alarm  	dbe $DBALARM
+ORB_Clients  	xterm -geometry 132x25 -e orbstat -c $ORBWF 30
+ORB_Sources  	xterm -geometry 132x60 -e orbstat -s $ORBWF 30
+}
+
+# Other files to add to edit menu
+Edit_files &Tbl{
+}
+
+Parameter_files &Arr{   # if the parameter file doesn't follow the convention
+                        # of being named after either the task name or 
+                        # the program name, it should be specified here, so
+                        # that rtm can allow editing it.
+}
+
+# The following are tasks which talk to the data orbserver, and
+# which therefore should have an input and output bar on the 
+# Processing Tasks panel of rtm.
+orbtasks &Arr{
+}
+
+title		AVO Real-Time Products   # alternate location to specify rtm title
+network_code    AV		# network code for rtreport and rtsys
+
+# following are used by rtreport
+
+minimum_days_data_space_left		3
+minimum_Mbytes_database_space_left	2000
+maximum_Mbytes_logs_space_used		100
+minimum_Mbytes_root_space_left		100
+
+
+pf_revision_time 1180591796
+
+
+

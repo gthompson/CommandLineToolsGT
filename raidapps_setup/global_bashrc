@@ -1,0 +1,58 @@
+#########################
+# PATHS AND ENVIRONMENT #
+#########################
+
+# source antelope setup if available
+if [ -f /raid/apps/setup/global_bashrc_antelope ]; then
+    #echo global_bashrc_antelope
+    . /raid/apps/setup/global_bashrc_antelope
+fi
+
+# Add MATLAB binaries to search path
+#PATH="$PATH:/raid/apps/matlab/r2013b/bin"
+#export MATLAB="/raid/apps/matlab/r2013b"
+
+# 2015a not guaranteed to work with Antelope 5.5
+PATH="$PATH:/raid/apps/matlab/R2015a/bin"
+export MATLAB="/raid/apps/matlab/r2015a"
+
+# Add SAC
+. /raid/apps/sac/bin/sacinit.sh
+
+# Add IDL
+export PATH="$PATH:/raid/apps/idl/8.2/idl/bin"
+
+# remove duplicate path entries and preserve PATH order
+export PATH=$(echo $PATH | awk -F: '
+{ start=0; for (i = 1; i <= NF; i++) if (!($i in arr) && $i) {if (start!=0) printf ":";start=1; printf "%s", $i;arr[$i]}; }
+END { printf "\n"; } ')
+
+# Add Earthworm
+#. /raid/apps/earthworm/run_working/params/ew_linux.bash
+
+# Add swarm 
+export PATH="/raid/apps/swarm:$PATH"
+
+# Add Anaconda Python distribution (use pip install to add new packages) 
+export PATH="/raid/apps/anaconda2/bin:$PATH"
+
+# Add TauP 
+export  TAUP_HOME=/raid/apps/TauP-2.1.2
+export PATH="${PATH}:${TAUP_HOME}/bin"
+
+# Add Guralp tools
+#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/raid/apps/guralptools/lib
+export PATH=$PATH:/raid/apps/guralptools/bin
+#########################
+#      ALIASES          #
+#########################
+# source global aliases if available
+if [ -f /raid/apps/setup/global_bash_aliases ]; then
+    #echo global_bash_aliases
+    . /raid/apps/setup/global_bash_aliases
+fi
+
+# Add PASSCAL software
+export PASSCAL=/raid/apps/passcal
+export PASSOFT=${PASSCAL}
+. ${PASSCAL}/setup/setup.sh

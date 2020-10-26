@@ -1,0 +1,127 @@
+dbcentral_database	/raid/data/antelope/dbcentral/dbcentral
+default_tasks	&Tbl{
+    dbe		dbe DBNAME
+    dbe_editable	dbe -e DBNAME
+}
+home	&env(HOME)
+custom_tasks	&Arr{
+    Alaska_stations(S)	&Tbl{
+        dbe             dbe DBNAME
+    }
+    Alaska_waveforms(SW)	&Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    AVO_total(E)	&Tbl{
+        dbe             dbe DBNAME
+        dbevents        dbevents DBNAME
+    }
+    AEIC_reviewed_total(E)	&Tbl{
+        dbe             dbe DBNAME
+        dbevents        dbevents DBNAME
+    }
+    ANDIVOLC(SW)	&Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    ARCTIC(SW)	&Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    AUGUSTINE_2006(SW)	&Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    AVO_earthworm_automated(SWE)	&Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+        dbevents        dbevents DBNAME
+    }
+    AVO_realtime_automated(SWE)	&Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+        dbevents        dbevents DBNAME
+    }
+    BEAAR(SW)	&Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    BERING(SW)	&Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    CODEX_MARS(SW)	&Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    Kamchatka_regional_catalog(E)	&Tbl{
+        dbe             dbe DBNAME
+    }
+    MOOS(SW)	&Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    PDE_global_catalog(E)	&Tbl{
+        dbe             dbe DBNAME
+    }
+    PIRE(SWE)	&Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    REDOUBT_2009(SW)	&Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    SPURR_2005(SWE)	&Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    YAHTSE(SW)	&Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    dbcentral_clusters	&Tbl{
+        dbe             dbe DBNAME
+        dbe_editable    dbe -e DBNAME
+    }
+    PLUTONS(SW)    &Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    AUGUSTINE_2005(E)    &Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    CLEVELAND_2011(E)    &Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    PAVLOF_2007_AEIC(E)    &Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+    PAVLOF_2007_AVO(E)    &Tbl{
+        dbe             dbe DBNAME
+        smartpick       smartpick -nowait DBNAME
+        dbpick          xterm -e dbpick -nostarttalk DBNAME
+    }
+}
+pf_revision_time	1366408152
