@@ -1,6 +1,8 @@
 #!/usr/bin/perl -w
 use strict;
+use Env;
 use File::Path;
+use File::Basename;
 use File::Spec qw(catpath);
 #use GetOpt::Long::Descriptive;
 my @options=@ARGV;
@@ -55,7 +57,9 @@ sub check_mountpoint {
 	my @dummy = split("/", $dir);
 	my $mountpoint = "/$dummy[1]/".$dummy[2];
 	$mountpoint = "/home" if $dummy[1] eq "home"; # exception for /home, not 2 levels
-	
+	if (($dummy[1] eq "raid") && ($ENV{'HOSTNAME'} eq "newton.rc.usf.edu")) {
+		$mountpoint = "/raid"; # exception for newton, as /raid is mountpoint, not /raid/data
+	}	
 	my $result = `mountpoint $mountpoint`;
 	chomp($result);
 	if ($result eq "$mountpoint is not a mountpoint") {
@@ -89,13 +93,12 @@ sub rsync_this_file {
 		}
 	} else {
 		my $targetfile = $targetdir;
-		my $parentdir = dirname $targetfile;
+		my $parentdir = dirname($targetfile);
 		unless (-d $parentdir) {
 			print "- Need to mkpath $parentdir\n";
 			unless ($SAFEMODE or mkpath($parentdir)) {
 				print "- ERROR Could not mkpath $parentdir\n";
 				my $end_ts = &getTimeStamp();
-				print "$RSYNC_COMMAND, $sourcedir/, $targetdir, # source files, $numsourcefiles, # target files, -999, mkpath failed, $start_ts, $end_ts\n";
 				return;
 			}
 		}
